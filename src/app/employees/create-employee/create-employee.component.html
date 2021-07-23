@@ -1,5 +1,5 @@
 <div class="container">
-  <form #employeeForm="ngForm" (ngSubmit)="saveEmployee(employee)">
+  <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">Create Employee</h3>
@@ -158,14 +158,20 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div
+          class="form-group"
+          [class.has-error]="department.touched && department.invalid"
+        >
           <label for="department"> Department </label>
           <select
             id="department"
+            appSelectValidator="select"
+            #department="ngModel"
             name="department"
             [(ngModel)]="employee.department"
             class="form-control"
           >
+            <option value="select">Select Department</option>
             <option
               *ngFor="let department of departments"
               [value]="department.id"
@@ -173,7 +179,13 @@
               {{ department.name }}
             </option>
           </select>
+          <span
+            class="help-block"
+            *ngIf="department.touched && department.errors?.defaultSelected"
+            >Department is required</span
+          >
         </div>
+
         <div class="row">
           <div class="form-group col-md-5">
             <label for="dateOfBirth">Date of Birth</label>
@@ -219,6 +231,76 @@
             width="200"
           />
         </div>
+        <!-- <div
+          ngModelGroup="passwordGroup"
+          [class.has-error]="
+            confirmPassword.touched &&
+            confirmPassword.invalid &&
+            !confirmPassword.errors?.required
+          "
+        >
+          <div
+            class="form-group"
+            [class.has-error]="password.touched && password.invalid"
+          >
+            <label for="password" class="control-label">Password</label>
+            <input
+              id="password"
+              required
+              type="text"
+              class="form-control"
+              name="password"
+              [(ngModel)]="employee.password"
+              #password="ngModel"
+              (input)="confirmPassword.control.updateValueAndValidity()"
+            />
+            <span
+              class="help-block"
+              *ngIf="password.touched && password.errors?.required"
+            >
+              Password is required
+            </span>
+          </div>
+
+          <div
+            class="form-group"
+            [class.has-error]="
+              confirmPassword.touched && confirmPassword.invalid
+            "
+          >
+            <label for="confirmPassword" class="control-label"
+              >Confirm Password</label
+            >
+            <input
+              name="confirmPassword"
+              appConfirmEqualValidator="password"
+              required
+              id="confirmPassword"
+              type="text"
+              class="form-control"
+              [(ngModel)]="employee.confirmPassword"
+              #confirmPassword="ngModel"
+            />
+            <span
+              class="help-block"
+              *ngIf="
+                confirmPassword.touched && confirmPassword.errors?.required
+              "
+            >
+              Confirm Password is required
+            </span>
+            <span
+              class="help-block"
+              *ngIf="
+                confirmPassword.touched &&
+                confirmPassword.errors?.notEqual &&
+                !confirmPassword.errors?.required
+              "
+            >
+              Password and Confirm Password does not match
+            </span>
+          </div>
+        </div> -->
       </div>
 
       <div class="panel-footer">
