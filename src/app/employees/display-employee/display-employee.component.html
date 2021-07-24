@@ -1,4 +1,8 @@
-<div class="panel panel-info" style="cursor: pointer">
+<div
+  class="panel panel-info"
+  [class.panel-warning]="selectedEmployeeId === employee.id"
+  style="cursor: pointer"
+>
   <div class="panel-heading">
     <h3 class="panel-title">{{ employee.name }}</h3>
   </div>
