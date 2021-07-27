@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
-import { EmployeeSerive } from '../employee.service';
 
 @Component({
   templateUrl: './list-employees.component.html',
@@ -11,15 +10,46 @@ export class ListEmployeesComponent implements OnInit {
   employees: Employee[];
   employeeToDisplay: Employee;
   private arrayIndex = 1;
+  filteredEmployees: Employee[];
+  private _searchTerm: string;
 
-  constructor(
-    private _employeeService: EmployeeSerive,
-    private _router: Router
-  ) {}
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+  set searchTerm(value: string) {
+    this._searchTerm = value;
+    this.filteredEmployees = this.filtereEmployees(value);
+  }
 
-  ngOnInit(): void {
-    this.employees = this._employeeService.getEmployees();
-    this.employeeToDisplay = this.employees[0];
+  constructor(private _router: Router, private _route: ActivatedRoute) {
+    this.employees = this._route.snapshot.data['employeeList'];
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+  }
+
+  ngOnInit(): void {}
+
+  // this.employeeToDisplay = this.employees[0];
+  // this.filteredEmployees = this.employees;
+
+  // Snapshort Approuch
+
+  // Observable Approuch
+  // this._route.queryParamMap.subscribe((queryParams) => {
+  //   if (queryParams.has('searchTerm')) {
+  //     this.searchTerm = queryParams.get('searchTerm');
+  //   } else {
+  //     this.filteredEmployees = this.employees;
+  //   }
+  // });
+
+  filtereEmployees(searchString: string) {
+    return this.employees.filter(
+      (e) => e.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1
+    );
   }
 
   nextEmployee(): void {
@@ -30,9 +60,5 @@ export class ListEmployeesComponent implements OnInit {
       this.employeeToDisplay = this.employees[0];
       this.arrayIndex = 1;
     }
-  }
-
-  toEmployeeDetails(employeeId: number) {
-    this._router.navigate(['/employees', employeeId]);
   }
 }

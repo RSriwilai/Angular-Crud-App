@@ -4,11 +4,23 @@
       <a routerLink="list">List</a>
     </li>
     <li>
-      <a routerLink="create">Create</a>
+      <a routerLink="edit/0">Create</a>
     </li>
-    <!-- <li>
-      <a [routerLink]="">Create</a>
-    </li> -->
   </ul>
+</div>
+<!-- <div *ngIf="showLoadingIndicator" class="lds-default"></div> -->
+<div *ngIf="showLoadingIndicator" class="lds-default">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
 </div>
 <router-outlet></router-outlet>

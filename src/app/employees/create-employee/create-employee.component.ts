@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Department } from 'src/app/models/department.model';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Employee } from 'src/app/models/employee.model';
-import { EmployeeSerive } from '../employee.service';
-import { Router } from '@angular/router';
+import { EmployeeService } from '../employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -14,20 +14,8 @@ import { Router } from '@angular/router';
 export class CreateEmployeeComponent implements OnInit {
   @ViewChild('employeeForm') public createEmployeeForm: NgForm;
 
-  employee: Employee = {
-    id: null,
-    name: null,
-    gender: null,
-    contactPreference: null,
-    phoneNumber: null,
-    email: null,
-    dateOfBirth: null,
-    department: 'select',
-    isActive: null,
-    photoPath: null,
-    // password: null,
-    // confirmPassword: null,
-  };
+  employee: Employee;
+  panelTitle: string;
 
   departments: Department[] = [
     { id: 1, name: 'Help Desk' },
@@ -41,8 +29,9 @@ export class CreateEmployeeComponent implements OnInit {
   previewPhoto = false;
 
   constructor(
-    private _employeeSerive: EmployeeSerive,
-    private _router: Router
+    private _employeeService: EmployeeService,
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {
     this.datePickerConfiq = Object.assign(
       {},
@@ -55,11 +44,43 @@ export class CreateEmployeeComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this._route.paramMap.subscribe((parameterMap) => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
+  }
 
   saveEmployee(): void {
-    this._employeeSerive.save(this.employee);
+    const newEmployee: Employee = Object.assign({}, this.employee);
+    this._employeeService.save(newEmployee);
+    this.createEmployeeForm.reset();
     this._router.navigate(['list']);
+  }
+
+  private getEmployee(id: number) {
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name: null,
+        gender: null,
+        contactPreference: null,
+        phoneNumber: null,
+        email: null,
+        dateOfBirth: null,
+        department: 'select',
+        isActive: null,
+        photoPath: null,
+      };
+      this.panelTitle = 'Create Employee';
+      this.createEmployeeForm.reset();
+    } else {
+      this.panelTitle = 'Edit Employee';
+      this.employee = Object.assign(
+        {},
+        this._employeeService.getEmployeesById(id)
+      );
+    }
   }
 
   togglePhotoPreview() {

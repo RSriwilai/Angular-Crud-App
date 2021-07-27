@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,17 +12,29 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectRequiredValidatorDirective } from './shared/select-required-validator-directive';
 import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
-import { EmployeeSerive } from './employees/employee.service';
+import { EmployeeService } from './employees/employee.service';
 import { DisplayEmployeeComponent } from './employees/display-employee/display-employee.component';
 import { CreateEmployeeCanDeactivateGuardService } from './employees/create-employee-can-deactivate-guard.service';
 import { EmployeeDetailsComponent } from './employees/employee-details/employee-details.component';
-CreateEmployeeCanDeactivateGuardService;
+import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
+import { EmplyeeListResolverService } from './employees/employee-list-resolver.service';
+import { PageNotFoundComponent } from './employees/page-not-found/page-not-found.component';
+import { EmployeeDetailsGuardService } from './employees/employee-details-guard.service';
 
 const appRoute: Routes = [
-  { path: 'list', component: ListEmployeesComponent },
-  { path: 'employees/:id', component: EmployeeDetailsComponent },
   {
-    path: 'create',
+    path: 'list',
+    component: ListEmployeesComponent,
+    resolve: { employeeList: EmplyeeListResolverService },
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeeDetailsGuardService],
+  },
+  { path: 'notfound', component: PageNotFoundComponent },
+  {
+    path: 'edit/:id',
     component: CreateEmployeeComponent,
     canDeactivate: [CreateEmployeeCanDeactivateGuardService],
   },
@@ -38,6 +50,8 @@ const appRoute: Routes = [
     ConfirmEqualValidatorDirective,
     DisplayEmployeeComponent,
     EmployeeDetailsComponent,
+    EmployeeFilterPipe,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +61,12 @@ const appRoute: Routes = [
     BrowserAnimationsModule,
     CommonModule,
   ],
-  providers: [EmployeeSerive, CreateEmployeeCanDeactivateGuardService],
+  providers: [
+    EmployeeService,
+    CreateEmployeeCanDeactivateGuardService,
+    EmplyeeListResolverService,
+    EmployeeDetailsGuardService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 
 @Component({
@@ -10,10 +10,21 @@ import { Employee } from 'src/app/models/employee.model';
 export class DisplayEmployeeComponent implements OnInit {
   @Input() employee: Employee;
   selectedEmployeeId: number;
+  @Input() searchTerm: string;
 
-  constructor(private _route: ActivatedRoute) {}
+  constructor(private _route: ActivatedRoute, private _router: Router) {}
 
   ngOnInit() {
     this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+  viewEmployee() {
+    this._router.navigate(['/employees', this.employee.id], {
+      queryParams: { searchTerm: this.searchTerm },
+    });
+  }
+
+  editEmployee() {
+    this._router.navigate(['/edit', this.employee.id]);
   }
 }

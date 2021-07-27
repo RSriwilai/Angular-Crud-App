@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
-import { EmployeeSerive } from '../employee.service';
+import { EmployeeService } from '../employee.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -14,7 +14,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private _employeeService: EmployeeSerive,
+    private _employeeService: EmployeeService,
     private _router: Router
   ) {}
 
@@ -30,6 +30,8 @@ export class EmployeeDetailsComponent implements OnInit {
     } else {
       this._id = 1;
     }
-    this._router.navigate(['/employees', this._id]);
+    this._router.navigate(['/employees', this._id], {
+      queryParamsHandling: 'preserve',
+    });
   }
 }
