@@ -20,6 +20,7 @@ import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
 import { EmplyeeListResolverService } from './employees/employee-list-resolver.service';
 import { PageNotFoundComponent } from './employees/page-not-found/page-not-found.component';
 import { EmployeeDetailsGuardService } from './employees/employee-details-guard.service';
+import { AccordionComponent } from './shared/accordion/accordion.component';
 
 const appRoute: Routes = [
   {
@@ -52,6 +53,7 @@ const appRoute: Routes = [
     EmployeeDetailsComponent,
     EmployeeFilterPipe,
     PageNotFoundComponent,
+    AccordionComponent,
   ],
   imports: [
     BrowserModule,
