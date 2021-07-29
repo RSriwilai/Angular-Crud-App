@@ -41,20 +41,6 @@ export class ListEmployeesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // this.employeeToDisplay = this.employees[0];
-  // this.filteredEmployees = this.employees;
-
-  // Snapshort Approuch
-
-  // Observable Approuch
-  // this._route.queryParamMap.subscribe((queryParams) => {
-  //   if (queryParams.has('searchTerm')) {
-  //     this.searchTerm = queryParams.get('searchTerm');
-  //   } else {
-  //     this.filteredEmployees = this.employees;
-  //   }
-  // });
-
   filtereEmployees(searchString: string) {
     return this.employees.filter(
       (e) => e.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1

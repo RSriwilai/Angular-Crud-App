@@ -26,7 +26,7 @@ export class EmployeeService {
     }
 
     return throwError(
-      'There is a problem with the service. We are notified & working on it. Please try again later.'
+      'Developers make sure to have json-server installed(npm install -g json-server) and connect to the server side (json-server --watch db.json)'
     );
   }
 
