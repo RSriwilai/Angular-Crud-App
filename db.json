@@ -9,7 +9,8 @@
       "dateOfBirth": "1996/04/05",
       "department": "3",
       "isActive": true,
-      "photoPath": "assets/images/rattanachai.png"
+      "photoPath": "assets/images/rattanachai.png",
+      "phoneNumber": "0760941986"
     },
     {
       "id": 2,
@@ -52,6 +53,18 @@
       "phoneNumber": "123456789",
       "email": "david151@hotmail.com",
       "dateOfBirth": "2004-05-18T22:00:00.000Z",
+      "department": "3",
+      "isActive": true,
+      "photoPath": "assets/images/rattanachai.png"
+    },
+    {
+      "id": 6,
+      "name": "Tim",
+      "gender": "Female",
+      "contactPreference": "phone",
+      "phoneNumber": "12345678",
+      "email": "tim@hotmail.com",
+      "dateOfBirth": "2004-02-10T23:00:00.000Z",
       "department": "3",
       "isActive": true,
       "photoPath": "assets/images/rattanachai.png"

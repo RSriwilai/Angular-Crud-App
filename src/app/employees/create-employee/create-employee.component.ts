@@ -52,14 +52,24 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   saveEmployee(): void {
-    this._employeeService.save(this.employee).subscribe(
-      (data: Employee) => {
-        console.log(data);
-        this.createEmployeeForm.reset();
-        this._router.navigate(['list']);
-      },
-      (error: any) => console.log(error)
-    );
+    if (this.employee.id == null) {
+      this._employeeService.addEmployee(this.employee).subscribe(
+        (data: Employee) => {
+          console.log(data);
+          this.createEmployeeForm.reset();
+          this._router.navigate(['list']);
+        },
+        (error: any) => console.log(error)
+      );
+    } else {
+      this._employeeService.updateEmployee(this.employee).subscribe(
+        () => {
+          this.createEmployeeForm.reset();
+          this._router.navigate(['list']);
+        },
+        (error: any) => console.log(error)
+      );
+    }
   }
 
   private getEmployee(id: number) {
@@ -80,9 +90,9 @@ export class CreateEmployeeComponent implements OnInit {
       // this.createEmployeeForm.reset();
     } else {
       this.panelTitle = 'Edit Employee';
-      this.employee = Object.assign(
-        {},
-        this._employeeService.getEmployeesById(id)
+      this._employeeService.getEmployeesById(id).subscribe(
+        (employee) => (this.employee = employee),
+        (err: any) => console.log(err)
       );
     }
   }

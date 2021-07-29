@@ -18,10 +18,13 @@ export class EmployeeDetailsComponent implements OnInit {
     private _router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._route.paramMap.subscribe((params) => {
       this._id = +params.get('id');
-      this.employee = this._employeeService.getEmployeesById(this._id);
+      this._employeeService.getEmployeesById(this._id).subscribe(
+        (employee) => (this.employee = employee),
+        (err: any) => console.log(err)
+      );
     });
   }
   viewNextEmployee() {
